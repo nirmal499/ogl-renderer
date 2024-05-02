@@ -13,8 +13,14 @@ add_executable(main
 
     src/logger.cpp
     src/window.cpp
+    src/model.cpp
+    src/framebuffer.cpp
+    src/shader.cpp
+    src/renderer.cpp
+    src/texture.cpp
+    src/vertexbuffer.cpp
 
-    glad/src/glad.c
+    include/glad/glad.c
 )
 
 target_include_directories(main
@@ -23,7 +29,7 @@ target_include_directories(main
     PRIVATE external/glm
 
     PRIVATE src/include
-    PRIVATE glad/include
+    PRIVATE include
 )
 
 target_link_libraries(main
