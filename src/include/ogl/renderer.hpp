@@ -12,6 +12,7 @@
 #include <ogl/texture.hpp>
 #include <ogl/shader.hpp>
 #include <ogl/renderdata.hpp>
+#include <ogl/uniformbuffer.hpp>
 
 class Renderer
 {
@@ -35,6 +36,7 @@ class Renderer
         Framebuffer m_frame_buffer{};
         Texture m_texture{};
         VertexBuffer m_vertex_buffer{};
+        UniformBuffer m_uniform_buffer{};
 
         GLFWwindow* m_window = nullptr;
 
@@ -42,4 +44,8 @@ class Renderer
 
         int m_width = 0;
         int m_height = 0;
+
+        /* create identity matrix by default */
+        glm::mat4 m_view_matrix = glm::mat4(1.0f);
+        glm::mat4 m_projection_matrix = glm::mat4(1.0f);
 };

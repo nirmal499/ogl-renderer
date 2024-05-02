@@ -1,6 +1,8 @@
 #include <ogl/renderer.hpp>
 #include <tool/logger.hpp>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #define SHADER_PATH "/home/nbaskey/Desktop/nirmal/projects/ogl-engine/shader/"
 #define TEXTURE_PATH "/home/nbaskey/Desktop/nirmal/projects/ogl-engine/texture/"
 
@@ -55,6 +57,9 @@ bool Renderer::init(unsigned int width, unsigned int height)
 
   m_vertex_buffer.init();
   Logger::log(1, "%s: vertex buffer successfully created\n", __FUNCTION__);
+
+  m_uniform_buffer.init();
+  Logger::log(1, "%s: uniform buffer successfully created\n", __FUNCTION__);
 
   if (!m_basic_shader.load_shaders(SHADER_PATH "basic.vert", SHADER_PATH  "basic.frag"))
   {
@@ -125,14 +130,29 @@ void Renderer::draw()
   glClearDepth(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  glm::vec3 cameraPosition = glm::vec3(0.4f, 0.3f, 1.0f);
+  glm::vec3 cameraLookAtPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+  glm::vec3 cameraUpVector = glm::vec3(0.0f, 1.0f, 0.0f);
+
+  m_projection_matrix = glm::perspective(glm::radians(90.0f), static_cast<float>(m_width) / static_cast<float>(m_height), 0.1f, 100.f);
+  
+  float t = glfwGetTime();
+  glm::mat4 model = glm::mat4(1.0f);
+
   if(m_use_changed_shader)
   {
     m_changed_shader.use();
+    model = glm::rotate(glm::mat4(1.0f), -t, glm::vec3(0.0f, 0.0f, 1.0f));
   }
   else
   {
     m_basic_shader.use();
+    model = glm::rotate(glm::mat4(1.0f), t, glm::vec3(0.0f, 0.0f, 1.0f));
   }
+
+  m_view_matrix = glm::lookAt(cameraPosition, cameraLookAtPosition, cameraUpVector) * model;
+
+  m_uniform_buffer.upload_ubo_data(m_view_matrix, m_projection_matrix);
 
   m_texture.bind();
   m_vertex_buffer.bind();

@@ -19,6 +19,7 @@ add_executable(main
     src/renderer.cpp
     src/texture.cpp
     src/vertexbuffer.cpp
+    src/uniformbuffer.cpp
 
     include/glad/glad.c
 )

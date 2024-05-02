@@ -83,6 +83,10 @@ bool Shader::create_shader_program(std::string vertexShaderFileName, std::string
     return false;
   }
 
+  /* bind UBO in shader */
+  GLint uboIndex = glGetUniformBlockIndex(m_shader_program, "Matrices");
+  glUniformBlockBinding(m_shader_program, uboIndex, 0);
+
   /* it is safe to delete the shaders here */
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
