@@ -21,15 +21,25 @@ class Renderer
         void upload_data(Mesh vertexData);
         void draw();
         void clean_up();
+        void handle_key_events(int key, int scancode, int action, int mods);
 
-        Renderer();
+        Renderer(GLFWwindow* window);
         ~Renderer();
 
     private:
-        Shader m_shader{};
+        Shader m_basic_shader{};
+        Shader m_changed_shader{};
+
+        bool m_use_changed_shader = false;
+
         Framebuffer m_frame_buffer{};
         Texture m_texture{};
         VertexBuffer m_vertex_buffer{};
 
+        GLFWwindow* m_window = nullptr;
+
         int m_triangle_count = 0;
+
+        int m_width = 0;
+        int m_height = 0;
 };

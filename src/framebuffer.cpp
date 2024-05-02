@@ -56,7 +56,7 @@ bool Framebuffer::resize(unsigned int newWidth, unsigned int newHeight) {
   glDeleteRenderbuffers(1, &m_depth_buffer);
   glDeleteFramebuffers(1, &m_buffer);
 
-  return init(newWidth, newHeight);
+  return this->init(newWidth, newHeight);
 }
 
 void Framebuffer::bind()

@@ -35,7 +35,7 @@ bool Window::init(unsigned int width, unsigned int height, std::string title)
 
   glfwMakeContextCurrent(m_window);
 
-  m_renderer = std::make_unique<Renderer>();
+  m_renderer = std::make_unique<Renderer>(m_window);
   if(!m_renderer->init(width, height))
   {
     glfwTerminate();
@@ -49,6 +49,11 @@ bool Window::init(unsigned int width, unsigned int height, std::string title)
   glfwSetWindowSizeCallback(m_window, [](GLFWwindow *win, int width, int height) {
     auto renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(win));
     renderer->set_size(width, height);
+  });
+
+  glfwSetKeyCallback(m_window, [](GLFWwindow* win, int key, int scancode, int action, int mods) {
+    auto renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(win));
+    renderer->handle_key_events(key, scancode, action, mods);
   });
 
   m_model = std::make_unique<Model>();
